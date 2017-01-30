@@ -1,3 +1,6 @@
 ---
 # defaults file for galexrt.sysctl
+# the path is /etc/sysctl.d/
+sysctl_file: "01-ansible.conf"
+
 sysctl: []

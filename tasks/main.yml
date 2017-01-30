@@ -1,2 +1,31 @@
 ---
-# tasks file for galexrt.sysctl
+- name: Check if sysctl.d directory exists
+  stat:
+    path: "/etc/sysctl.d/{{ sysctl_file }}"
+  register: s
+
+- name: Set sysctl_file depending on the existance of sysctl.d dir
+  set:
+    sysctl_file: "/etc/sysctl.conf"
+  when: not s.stat.exists
+
+- name: Create empty sysctl conf file template
+  template:
+    src: "sysctl.conf.j2"
+    dest: "{{ sysctl_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: not s.stat.exists
+
+- name: Set sysctl vars and write to file
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    ignoreerrors: "{{ item.ignoreerrors|default('yes') }}"
+    reload: no
+    sysctl_set: yes
+    sysctl_file: "{{ sysctl_file }}"
+  with_items: "{{ sysctl }}"
+  notify:
+    - Reload sysctl
