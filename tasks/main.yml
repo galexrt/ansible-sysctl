@@ -5,7 +5,7 @@
   register: s
 
 - name: Set sysctl_file depending on the existance of sysctl.d dir
-  set:
+  set_fact:
     sysctl_file: "/etc/sysctl.conf"
   when: not s.stat.exists
 
