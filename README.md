@@ -17,8 +17,8 @@ Role Variables
 sysctl:
   - name: test
     value: 100
-    state:
-    ignoreerrors: no # allows for manual setting it
+    state: present # or absent
+    ignoreerrors: no
 ```
 
 Dependencies
