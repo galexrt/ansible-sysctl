@@ -19,14 +19,20 @@
   when: not s.stat.exists
 
 - name: Set sysctl vars and write to file
-  sysctl:
-    name: "{{ item.name }}"
+  command: "sysctl -wq {{ item.key }}={{ item.value|quote }}"
+    name: "{{ item.key }}"
     value: "{{ item.value }}"
-    state: "{{ item.state|default('present') }}"
-    ignoreerrors: "{{ item.ignoreerrors|default('yes') }}"
+    state: "{{ item.value.state|default('present') }}"
+    ignoreerrors: "{{ item.value.ignoreerrors|default('yes') }}"
     reload: no
     sysctl_set: yes
-    sysctl_file: "{{ sysctl_file }}"
-  with_items: "{{ sysctl }}"
-  notify:
-    - Reload sysctl
+  with_dict: "{{ sysctl }}"
+  when: "{{ item.key }} = {{ item.value }}" not in sysctl_all_vars.stdout
+
+- name: Set sysctl vars in autoload file
+  template:
+    src: "sysctl.conf.j2"
+    dest: "{{ sysctl_file }}"
+    owner: root
+    group: root
+    mode: 0644
