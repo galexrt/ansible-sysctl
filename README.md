@@ -15,10 +15,8 @@ Role Variables
 
 ```
 sysctl:
-  - name: test
-    value: 100
-    state: present # or absent
-    ignoreerrors: no
+  fs.file-max: 2097152
+  key: value
 ```
 
 Dependencies
