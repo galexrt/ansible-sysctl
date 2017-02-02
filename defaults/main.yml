@@ -3,4 +3,6 @@
 # the path is /etc/sysctl.d/
 sysctl_file: "01-ansible.conf"
 
+sysctl_ignore_errors: true
+
 sysctl: []
