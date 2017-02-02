@@ -22,7 +22,7 @@
   command: "sysctl -wq {{ item.key }}={{ item.value|quote }}"
   ignore_errors: "{{ sysctl_ignore_errors|default(true) }}"
   with_dict: "{{ sysctl }}"
-  when: '{{ item.key }} = {{ item.value }}' not in sysctl_all_vars.stdout
+  when: "'{{ item.key }} = {{ item.value }}' not in sysctl_all_vars.stdout"
 
 - name: Set sysctl vars in autoload file
   template:
