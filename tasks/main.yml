@@ -1,21 +1,11 @@
 ---
 - name: Check if sysctl.d directory exists
-  stat:
-    path: "/etc/sysctl.d/{{ sysctl_file }}"
-  register: s
+  command: "sysctl -a"
+  register: sysctl_all_vars
 
 - name: Set sysctl_file depending on the existance of sysctl.d dir
   set_fact:
     sysctl_file: "/etc/sysctl.conf"
-  when: not s.stat.exists
-
-- name: Create empty sysctl conf file template
-  copy:
-    content: ""
-    dest: "{{ sysctl_file }}"
-    owner: root
-    group: root
-    mode: 0644
   when: not s.stat.exists
 
 - name: Set sysctl vars and write to file
