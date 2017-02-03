@@ -9,7 +9,7 @@
   when: not s.stat.exists
 
 - name: Set sysctl vars and write to file
-  command: "sysctl -wq {{ item.key }}={{ item.value|quote }}"
+  command: "sysctl -wq {{ item.key }}={{ item.value|string|quote }}"
   ignore_errors: "{{ sysctl_ignore_errors|default(true) }}"
   with_dict: "{{ sysctl }}"
   when: "'{{ item.key }} = {{ item.value }}' not in sysctl_all_vars.stdout"
