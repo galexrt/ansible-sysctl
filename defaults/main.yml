@@ -1,6 +1,7 @@
 ---
 # defaults file for galexrt.sysctl
-sysctl_file: "/etc/sysctl.d/01-ansible.conf"
+sysctld_dir: "/etc/sysctl.d"
+sysctl_file: "{{ sysctld_dir }}/01-ansible.conf"
 
 sysctl_ignore_errors: true
 
