@@ -10,11 +10,14 @@
   when: not s.stat.exists or not s.stat.isdir
 
 - name: Get current sysctl vars
-  command: "sysctl -a"
+  shell: "{{ sysctl_bin }} -a"
+  args:
+    executable: /bin/bash
+  changed_when: false
   register: sysctl_all_vars
 
 - name: Set sysctl vars and write to file
-  command: "sysctl -wq {{ item.key }}={{ item.value|string|quote }}"
+  command: "{{ sysctl_bin }} -wq {{ item.key }}={{ item.value|string|quote }}"
   ignore_errors: "{{ sysctl_ignore_errors|default(true) }}"
   with_dict: "{{ sysctl }}"
   when: item.key ~ " = " ~ item.value not in sysctl_all_vars.stdout
