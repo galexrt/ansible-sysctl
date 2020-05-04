@@ -15,6 +15,8 @@
     executable: /bin/bash
   changed_when: false
   register: sysctl_all_vars
+  # Don't spam verbose log with this output
+  no_log: true
 
 - name: Set sysctl vars and write to file
   command: "{{ sysctl_bin }} -wq {{ item.key }}={{ item.value|string|quote }}"
