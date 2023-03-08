@@ -10,7 +10,7 @@
   when: not s.stat.exists or not s.stat.isdir
 
 - name: Get current sysctl vars
-  shell: "{{ sysctl_bin }} -a"
+  ansible.builtin.shell: "{{ sysctl_bin }} -a"
   args:
     executable: /bin/bash
   changed_when: false
@@ -19,7 +19,7 @@
   no_log: true
 
 - name: Set sysctl vars and write to file
-  command: "{{ sysctl_bin }} -wq {{ item.key }}={{ item.value|string|quote }}"
+  ansible.builtin.command: "{{ sysctl_bin }} -wq {{ item.key }}={{ item.value|string|quote }}"
   ignore_errors: "{{ sysctl_ignore_errors|default(true) }}"
   with_dict: "{{ sysctl }}"
   when: item.key ~ " = " ~ item.value not in sysctl_all_vars.stdout
